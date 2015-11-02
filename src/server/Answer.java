@@ -3,18 +3,24 @@ package server;
 
 import java.io.Serializable;
 
+import common.Result;
+import common.Action;
+
 public class Answer implements Serializable{
-	Protocol answer, request;
-	String name;
+	Result answer;
+	Action request;
+	String field;
 	String[] surnames;
 	
-	private Answer(Protocal answer, Protocol request){
+	private Answer(Result answer, Action request){
 		this.answer = answer;
 		this.request = request;
 	}
-	public Answer(Protocol answer, Protocol request, Exception e){
-		Answer(answer, request);
+	public Answer(Result answer, Action request, String e){
+		this(answer, request);
+		field = e;
 	}
-//	public Answer(reponse , aquoi, String)
-//	public Answer(reponse , aquoi, String, String)
+	
+	//	public Answer(reponse , aquoi, String)
+	//	public Answer(reponse , aquoi, String, String)
 }

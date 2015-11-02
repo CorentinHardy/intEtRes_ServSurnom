@@ -2,26 +2,26 @@ package client;
 
 import java.io.Serializable;
 
-import common.Protocol;
+import common.Action;
 
 public class Request implements Serializable{
-	private Protocol protocol;
+	private Action action;
 	private String name;
 	private String nickname;
 	
-	public Request(Protocol protocol, String name){
-		this.protocol = protocol;
+	public Request(Action action, String name){
+		this.action = action;
 		this.name = name;
 	}
 	
-	public Request(Protocol protocol, String name, String nickname){
-		this.protocol = protocol;
+	public Request(Action action, String name, String nickname){
+		this.action = action;
 		this.name = name;
 		this.nickname = nickname;
 	}
 
-	public Protocol getProtocol() {
-		return protocol;
+	public Action getAction() {
+		return action;
 	}
 	
 	public String getName() {
