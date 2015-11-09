@@ -2,12 +2,13 @@
 
 # files of IDEs
 .settings/
+.idea/
+Server_Surnom.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
