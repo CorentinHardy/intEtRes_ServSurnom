@@ -31,7 +31,7 @@ public class Client {
 				a = (Answer) is.readObject();
 			}
 			
-			System.out.println("tavu, on a l'answer !" /* + a.getSomething()*/ );
+			System.out.println("tavu, on a l'answer !" /* + a.getResult()*/ );
 			
 			os.close();
 			is.close();
