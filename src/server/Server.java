@@ -6,6 +6,8 @@ import java.net.ServerSocket;
 public class Server {
 	
 	public static void main(String[] args) {
+		System.err.println("debut !");
+
 		ServerSocket serverSocket = null;
 		Boolean enEcoute = true;
 		int port = 1234;
@@ -13,7 +15,7 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.err.println("J'ai pas reçu I/O sur le port: " + port);
+			System.err.println("J'ai pas recu I/O sur le port: " + port);
 			System.exit(-1);
 		}
 		
