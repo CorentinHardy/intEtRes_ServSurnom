@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+//import ServSurnom_classes.*;
+
 public class ServerThread extends Thread {
 	private Socket socket;
 	
@@ -21,6 +23,17 @@ public class ServerThread extends Thread {
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
 			System.out.println("Je te vois !!!!");
+			
+//			Request request;
+//
+//			while(request == null)
+//				request = (Request) is.readObject();
+//
+//			Answer answer;
+			//answer = action(); // en gros
+			
+//			os.writeObject(answer);
+			
 			socket.close();
 			os.close();
 			is.close();

@@ -2,6 +2,7 @@
 
 # files of IDEs
 .settings/
+.classpath
 .idea/
 Server_Surnom.iml
 
