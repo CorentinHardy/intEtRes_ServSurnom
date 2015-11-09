@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry excluding="out/|out/" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="src/out"/>
+	<classpathentry kind="lib" path="external_library"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
