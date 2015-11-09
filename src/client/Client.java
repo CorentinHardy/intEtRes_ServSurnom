@@ -6,6 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import server.Answer;
+import common.Action;
+
 public class Client {
 
 	public static void main(String[] args) {
@@ -13,33 +16,28 @@ public class Client {
 
 		ObjectOutputStream os = null; // output stream
 		ObjectInputStream is = null; // input stream
+		
 		try {
-			socket = new Socket("hostname", 1234);
+			socket = new Socket("Jean Jacques", 1234);
+			Request r = new Request(Action.ADD_NAME, "Tortilla");
+			
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
-		} catch (UnknownHostException e) {
-			System.err.println("on ne connais pas l'hôte: hostname");
-		} catch (IOException e) {
-			System.err.println("J'ai pas pus recevoir I/O pour la connection à: hostname");
-		}
-		
-		if (socket != null && os != null && is != null) {
-			try{
-				os.writeBytes("Holla");
-				// attente de "Ok" du serveur SMTP,
-				String responseLine;
-				while ((responseLine = is.readLine()) != null) {
-					System.out.println("Server: " + responseLine);
-					if (responseLine.indexOf("Ok") != -1) {break;}
-				}
-				os.close();
-				is.close();
-				socket.close(); 
-			} catch (UnknownHostException e) {
-				System.err.println("t'essaye de te connecter à l'hôte pas connu: " + e);
-			} catch (IOException e){
-				System.err.println("IOException: " + e);
+			
+			Answer a = null;
+			
+			os.writeObject(r);
+			while(a == null){
+				a = (Answer) is.readObject();
 			}
+			
+			System.out.println("tavu, on a l'answer !" /* + a.getSomething()*/ );
+			
+			os.close();
+			is.close();
+			socket.close();
+		} catch (Exception e) {
+			System.err.println("Tu la sens mon Exception, gros !");
 		}
 	}
 }
