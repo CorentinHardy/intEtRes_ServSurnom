@@ -1,13 +1,13 @@
 package client;
-
+ 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import server.Answer;
-import common.Action;
+import out.Action;
+import out.Request;
+import out.Answer;
 
 public class Client {
 
@@ -19,14 +19,15 @@ public class Client {
 		
 		try {
 			socket = new Socket("Jean Jacques", 1234);
-			Request r = new Request(Action.ADD_NAME, "Tortilla");
+			/*Request r = new Request(Action.ADD_NAME, "Tortilla");*/
 			
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
 			
 			Answer a = null;
 			
-			os.writeObject(r);
+			/*os.writeObject(r);*/
+			os.writeObject(new String("ta mére gros !"));
 			while(a == null){
 				a = (Answer) is.readObject();
 			}
