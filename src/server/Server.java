@@ -1,32 +1,37 @@
 package server;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.UnknownHostException;
 
 public class Server {
 	
 	public static void main(String[] args) {
-		ServerSocket socket = null;
-		
+		ServerSocket serverSocket = null;
 		Boolean enEcoute = true;
-	
-		// ObjectOutputStream os = null;  // output stream
-		// ObjectInputStream is = null;   // input stream
+		int port = 1234;
+		
 		try {
-			socket = new ServerSocket(1234);
-			// os = new ObjectOutputStream(socket.getOutputStream());
-			// is = new ObjectInputStream(socket.getInputStream());
+			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.err.println("J'ai pas reçu I/O");
+			System.err.println("J'ai pas reçu I/O sur le port: " + port);
+			System.exit(-1);
 		}
 		
 		while(enEcoute){
-			// accepter une connection
-			// faire un nouveau thread
+			try{
+				// accepter une connection et faire un nouveau thread
+				(new ServerThread(serverSocket.accept())).start();
+			}catch(Exception e){
+				// TODO doit on afficher l'exception
+				System.out.println("Il y a eu un probleme majeur et inatendu: " + e);
+				enEcoute = false;
+			}
 		}
-		// socket.close();
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
