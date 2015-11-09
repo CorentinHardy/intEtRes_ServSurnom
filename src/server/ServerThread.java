@@ -20,6 +20,7 @@ public class ServerThread extends Thread {
 		try {
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
+			System.out.println("Je te vois !!!!");
 			socket.close();
 			os.close();
 			is.close();
