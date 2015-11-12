@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 public class Server {
 	
 	public static void main(String[] args) {
-		System.err.println("debut !");
+		System.out.println("debut du Server!");
 
 		ServerSocket serverSocket = null;
 		Boolean enEcoute = true;
@@ -15,7 +15,7 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.err.println("J'ai pas recu I/O sur le port: " + port);
+			System.out.println("J'ai pas recu I/O sur le port: " + port);
 			System.exit(-1);
 		}
 		
@@ -24,7 +24,7 @@ public class Server {
 				// accepter une connection et faire un nouveau thread
 				(new ServerThread(serverSocket.accept())).start();
 			}catch(Exception e){
-				// TODO doit on afficher l'exception
+				// TODO doit on afficher l'exception ?
 				System.out.println("Il y a eu un probleme majeur et inatendu: " + e);
 				enEcoute = false;
 			}
