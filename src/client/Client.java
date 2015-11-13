@@ -85,8 +85,8 @@ public class Client {
 		ObjectInputStream is = null; // input stream
 
 		try {
-            System.out.println("lel");
 			socket = new Socket("Jean Jacques", 1313);
+            System.out.println("lel");
 
 			Request r = createRequest();
 			

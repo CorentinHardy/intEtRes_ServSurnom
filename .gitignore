@@ -4,8 +4,8 @@
 /bin/
 
 # files of IDEs
-.settings/
 .classpath
+.settings/
 .idea/
 Server_Surnom.iml
 
