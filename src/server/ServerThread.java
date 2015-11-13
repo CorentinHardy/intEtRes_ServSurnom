@@ -71,7 +71,7 @@ public class ServerThread extends Thread {
 				System.out.println("we add to name "
 						+ request.getFirstValue() + " surname: "
 						+ request.getSecondValue());
-				gns.addSurname(request.getFirstValue(), request.getFirstValue());
+				gns.addSurname(request.getFirstValue(), request.getSecondValue());
 				List<String> al = new ArrayList<String>();
 				al.add(request.getSecondValue());
 				answer = new Answer(Result.OK, request.getAction(),
