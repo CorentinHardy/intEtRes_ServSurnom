@@ -1,9 +1,10 @@
 package server;
 
+import Exception.NameAlreadyExistException;
+import Exception.NicknameAlreadyExistException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import Exception.*;
 
 public class GestionNomSurnom {
 	private ArrayList<String> surnames;
@@ -72,4 +73,8 @@ public class GestionNomSurnom {
 		surnames.add(surname);
 		names.get(name).add(surnames.size() - 1);
 	}
+
+//	public List<String> getSurnames(String name){
+//
+//	}
 }

@@ -10,7 +10,7 @@ public class Server {
 
 		ServerSocket serverSocket = null;
 		Boolean enEcoute = true;
-		int port = 1234;
+		int port = 1313;
 		
 		try {
 			serverSocket = new ServerSocket(port);
