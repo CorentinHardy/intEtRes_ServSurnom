@@ -1,20 +1,17 @@
 package Exception;
 
-public class NameAlreadyExistException extends Exception{
+public class NameAlreadyExistException extends StringException{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3799568841627351388L;
-	
-	private String name;
-	
+		
 	public NameAlreadyExistException(String name){
-		super();
-		this.name = name;
+		super(name);
 	}
 	
 	@Override
 	public String toString(){
-		return "this name " + name + " already exist";
+		return "this name " + this.getString() + " already exist";
 	}
 }

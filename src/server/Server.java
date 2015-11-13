@@ -19,10 +19,12 @@ public class Server {
 			System.exit(-1);
 		}
 		
+		GestionNomSurnom gns = new GestionNomSurnom();
+		
 		while(enEcoute){
 			try{
 				// accepter une connection et faire un nouveau thread
-				(new ServerThread(serverSocket.accept())).start();
+				(new ServerThread(serverSocket.accept(), gns)).start();
 			}catch(Exception e){
 				// TODO doit on afficher l'exception ?
 				System.out.println("Il y a eu un probleme majeur et inatendu: " + e);

@@ -64,7 +64,7 @@ public class GestionNomSurnom {
 	 * @throws NameAlreadyExistException if the name doesn't exist.
 	 * @throws NicknameAlreadyExistException if the surname already exist
 	 */
-	public void addSurName(String name, String surname) throws NicknameAlreadyExistException, NameAlreadyExistException{
+	public void addSurname(String name, String surname) throws NicknameAlreadyExistException, NameAlreadyExistException{
 		if (! this.haveName(name))
 			throw new NameAlreadyExistException(name);
 		if (this.haveSurname(surname))
