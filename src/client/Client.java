@@ -22,13 +22,13 @@ public class Client {
 
         String number = in.nextLine();
 
-        if (number == "1") {
+        if ("1".equals(number)) {
             System.out.println("Veuillez tapper le Nom à ajouter :");
             in = new Scanner(System.in);
 
             String name = in.nextLine();
             return createRequest(Action.ADD_NAME, name);
-        } else if (number == "2") {
+        } else if ("2".equals(number)) {
             System.out.println("Veuillez tapper le Nom auquel vous voulez ajouter un surnom :");
             in = new Scanner(System.in);
 
@@ -85,7 +85,7 @@ public class Client {
 		ObjectInputStream is = null; // input stream
 
 		try {
-			socket = new Socket("Jean Jacques", 1313);
+			socket = new Socket("10.212.96.252", 4321);
             System.out.println("lel");
 
 			Request r = createRequest();
@@ -111,7 +111,7 @@ public class Client {
 			is.close();
 			socket.close();
 		} catch (Exception e) {
-			System.err.println("Tu la sens mon Exception, gros !");
+			System.err.println("Tu la sens mon Exception, gros ! " + e);
 		}
 	}
 }
