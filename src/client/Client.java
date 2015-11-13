@@ -27,6 +27,7 @@ public class Client {
             in = new Scanner(System.in);
 
             String name = in.nextLine();
+            in.close();
             return createRequest(Action.ADD_NAME, name);
         } else if ("2".equals(number)) {
             System.out.println("Veuillez tapper le Nom auquel vous voulez ajouter un surnom :");
@@ -37,8 +38,10 @@ public class Client {
             in = new Scanner(System.in);
 
             String nickname = in.nextLine();
+            in.close();
             return createRequest(Action.ADD_NICKNAME, name, nickname);
         } else {
+            in.close();
             return error();
         }
     }
@@ -85,7 +88,7 @@ public class Client {
 		ObjectInputStream is = null; // input stream
 
 		try {
-			socket = new Socket("10.212.96.252", 1313);
+			socket = new Socket("10.212.102.235", 4321);
             System.out.println("lel");
 
 			Request r = createRequest();
@@ -102,7 +105,9 @@ public class Client {
 
             String tavu = checkAnswer(a);
 			if ("ok".equals(tavu)) {
-                System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !");
+                System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !" +
+                        "\nMaintenant, regardons ce qu'on nous à retourné...\nDonc, on a déjà réalisé l'action" +
+                        " : " + a.getAction() + "\nEt avec cette action, on a tripoté ça : " + a.getFirstValue());
             } else if ("nope". equals(tavu)) {
                 System.out.println("Ohlala, on a fait de la mierda mon ami ><'. RIP notre vie...");
             } else {
@@ -113,7 +118,7 @@ public class Client {
 			is.close();
 			socket.close();
 		} catch (Exception e) {
-			System.err.println("Tu la sens mon Exception, gros ! d'ailleurs, la voici gros :" + e);
+			System.err.println("Tu la sens mon Exception, gros ! D'ailleurs, la voici, gros : " + e);
 		}
 	}
 }
