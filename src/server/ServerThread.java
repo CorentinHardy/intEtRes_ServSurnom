@@ -76,9 +76,13 @@ public class ServerThread extends Thread {
 				al.add(request.getSecondValue());
 				answer = new Answer(Result.OK, request.getAction(),
 						request.getFirstValue(), al);
-			}else if(Action.GET_NICKNAMES.equals(request.getAction())){
+			}else if(Action.GET_NICKNAMES.equals(request.getAction())) {
 				System.out.println("we search surname for name: " + request.getFirstValue());
 				List<String> al = gns.getSurnames(request.getFirstValue());
+				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue(), al);
+			}else if(Action.GET_NAME.equals(request.getAction())) {
+				List<String> al = new ArrayList<String>();
+				al.add(gns.getName(request.getFirstValue()));
 				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue(), al);
 			}else {
 				System.err.println("Request is unknown. we send a MarshallingException to the Client");

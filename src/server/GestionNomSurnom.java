@@ -3,7 +3,7 @@ package server;
 import Exception.NameAlreadyExistException;
 import Exception.NameNotFoundException;
 import Exception.NicknameAlreadyExistException;
-//import Exception.NicknameNotFoundException;
+import Exception.NicknameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,5 +100,22 @@ public class GestionNomSurnom {
 		for (int i : sn)
 			al.add(surnames.get(i));
 		return al;
+	}
+
+	/**
+	 *
+	 * @param surname
+	 * @return
+	 * @throws NicknameNotFoundException
+	 * @throws NicknameAlreadyExistException
+	 */
+	public String getName(String surname) throws NicknameNotFoundException, NicknameAlreadyExistException{
+		if (! this.haveSurname(surname))
+			throw new NicknameAlreadyExistException(surname);
+		for (String aName: names.keySet())
+			for (int i : names.get(aName))
+				if(surname.equals(surnames.get(i)))
+					return aName;
+		throw new NicknameNotFoundException(surname);
 	}
 }
