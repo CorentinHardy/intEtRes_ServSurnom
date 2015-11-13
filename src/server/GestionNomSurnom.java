@@ -9,7 +9,12 @@ import java.util.HashMap;
 public class GestionNomSurnom {
 	private ArrayList<String> surnames;
 	private HashMap<String, ArrayList<Integer>> names;
-	
+
+	public GestionNomSurnom(){
+		surnames = new ArrayList<String>();
+		names = new HashMap<String, ArrayList<Integer>>();
+	}
+
 	/**
 	 * look for a String surname. 
 	 * 

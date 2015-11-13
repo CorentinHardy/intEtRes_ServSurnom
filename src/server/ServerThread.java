@@ -46,11 +46,13 @@ public class ServerThread extends Thread {
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
 
+			System.out.println("on envoit une answer");
 			os.writeObject(answer);
 
 			socket.close();
 			os.close();
 			is.close();
+			System.out.println("fin d'un Thread");
 		} catch (IOException e) {
 			System.err.println("a IOException has appeared: " + e.getStackTrace());
 		}
@@ -65,8 +67,8 @@ public class ServerThread extends Thread {
 				answer = new Answer(Result.OK, Action.ADD_NAME, request.getFirstValue());
 			}else if(Action.ADD_NICKNAME.equals(request.getAction())) {
 				System.out.println("on ajoute au nom "
-						+ request.getSecondValue() + " le surnom: "
-						+ request.getFirstValue());
+						+ request.getFirstValue() + " le surnom: "
+						+ request.getSecondValue());
 				gns.addSurname(request.getFirstValue(), request.getFirstValue());
 				List<String> al = new ArrayList<String>();
 				al.add(request.getSecondValue());
