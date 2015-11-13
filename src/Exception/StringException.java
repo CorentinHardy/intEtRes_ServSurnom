@@ -16,4 +16,9 @@ public class StringException extends Exception{
 	public String getString(){
 		return str;
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " " + str;
+	}
 }
