@@ -1,15 +1,21 @@
 package server;
 
 import Exception.NameAlreadyExistException;
+import Exception.NameNotFoundException;
 import Exception.NicknameAlreadyExistException;
+//import Exception.NicknameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class GestionNomSurnom {
 	private ArrayList<String> surnames;
 	private HashMap<String, ArrayList<Integer>> names;
 
+	/**
+	 * Constructor for GestionNomSurnom.
+	 */
 	public GestionNomSurnom(){
 		surnames = new ArrayList<String>();
 		names = new HashMap<String, ArrayList<Integer>>();
@@ -79,7 +85,20 @@ public class GestionNomSurnom {
 		names.get(name).add(surnames.size() - 1);
 	}
 
-//	public List<String> getSurnames(String name){
-//
-//	}
+	/**
+	 * find and return all surname associated with the String name.
+	 *
+	 * @param name we want surnames of him.
+	 * @return List<String> of the surnames.
+	 * @throws NameNotFoundException if we don't know name.
+	 */
+	public List<String> getSurnames(String name) throws NameNotFoundException {
+		if (!this.haveName(name))
+			throw new NameNotFoundException(name);
+		List<String> al = new ArrayList<String>();
+		List<Integer> sn = names.get(name);
+		for (int i : sn)
+			al.add(surnames.get(i));
+		return al;
+	}
 }

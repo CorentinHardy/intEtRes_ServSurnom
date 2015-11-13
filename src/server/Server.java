@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 public class Server {
 	
 	public static void main(String[] args) {
-		System.out.println("debut du Server!");
+		System.out.println("Server Start:");
 
 		ServerSocket serverSocket = null;
 		Boolean enEcoute = true;
@@ -15,26 +15,27 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
-			System.out.println("J'ai pas recu I/O sur le port: " + port);
+			System.err.println("IOException on port: " + port);
+			e.printStackTrace();
 			System.exit(-1);
 		}
 		
 		GestionNomSurnom gns = new GestionNomSurnom();
-		
+
 		while(enEcoute){
 			try{
 				// accepter une connection et faire un nouveau thread
 				(new ServerThread(serverSocket.accept(), gns)).start();
 			}catch(Exception e){
-				// TODO doit on afficher l'exception ?
-				System.out.println("Il y a eu un probleme majeur et inatendu: " + e);
+				System.err.println("There was a big unknown problem: ");
+				e.printStackTrace();
 				enEcoute = false;
 			}
 		}
 		try {
 			serverSocket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("An IOException have appeared when we close the server:");
 			e.printStackTrace();
 		}
 	}

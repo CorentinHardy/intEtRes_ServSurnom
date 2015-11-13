@@ -31,7 +31,7 @@ public class ServerThread extends Thread {
 		try {
 			os = new ObjectOutputStream(socket.getOutputStream());
 			is = new ObjectInputStream(socket.getInputStream());
-			System.out.println("Je te vois !!!!");
+			System.out.println("Thread start");
 
 			Request request;
 			Answer answer;
@@ -42,19 +42,21 @@ public class ServerThread extends Thread {
 				while (request == null);
 				answer = findAnswer(request);
 			} catch (ClassNotFoundException e) {
-				System.err.println("a ClassNotFoundException has appeared: " + e.getStackTrace());
+				System.err.println("a ClassNotFoundException has appeared: ");
+				e.printStackTrace();
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
 
-			System.out.println("on envoit une answer");
+			System.out.println("we sent an answer");
 			os.writeObject(answer);
 
 			socket.close();
 			os.close();
 			is.close();
-			System.out.println("fin d'un Thread");
+			System.out.println("Thread's end");
 		} catch (IOException e) {
-			System.err.println("a IOException has appeared: " + e.getStackTrace());
+			System.err.println("a IOException has appeared: ");
+			e.printStackTrace();
 		}
 	}
 
@@ -62,27 +64,28 @@ public class ServerThread extends Thread {
 		Answer answer;
 		try {
 			if(Action.ADD_NAME.equals(request.getAction())){
-				System.out.println("on ajoute un nom: " + request.getFirstValue());
+				System.out.println("we add name: " + request.getFirstValue());
 				gns.addName(request.getFirstValue());
-				answer = new Answer(Result.OK, Action.ADD_NAME, request.getFirstValue());
+				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue());
 			}else if(Action.ADD_NICKNAME.equals(request.getAction())) {
-				System.out.println("on ajoute au nom "
-						+ request.getFirstValue() + " le surnom: "
+				System.out.println("we add to name "
+						+ request.getFirstValue() + " surname: "
 						+ request.getSecondValue());
 				gns.addSurname(request.getFirstValue(), request.getFirstValue());
 				List<String> al = new ArrayList<String>();
 				al.add(request.getSecondValue());
-				answer = new Answer(Result.OK, Action.ADD_NICKNAME,
+				answer = new Answer(Result.OK, request.getAction(),
 						request.getFirstValue(), al);
-		/*/
 			}else if(Action.GET_NICKNAMES.equals(request.getAction())){
+				System.out.println("we search surname for name: " + request.getFirstValue());
 				List<String> al = gns.getSurnames(request.getFirstValue());
-		//*/
+				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue(), al);
 			}else {
-				System.out.println("on ne fait rien.");
+				System.err.println("Request is unknown. we send a MarshallingException to the Client");
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
 		} catch (StringException e) {
+			System.out.println("Answer Exception sent: " + e.toString());
 			answer = new Answer(Result.EXCEPTION, request.getAction(), e.toString());
 		}
 		return answer;
