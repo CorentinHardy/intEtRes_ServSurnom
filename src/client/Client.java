@@ -85,7 +85,7 @@ public class Client {
 		ObjectInputStream is = null; // input stream
 
 		try {
-			socket = new Socket("10.212.96.252", 4321);
+			socket = new Socket("10.212.96.252", 1313);
             System.out.println("lel");
 
 			Request r = createRequest();
@@ -99,9 +99,11 @@ public class Client {
 			while(a == null){
 				a = (Answer) is.readObject();
 			}
-			if ("ok".equals(a)) {
-                System.out.println("tavu, on a l'Answer et marche mon loulou ! Et elle nous dit un bon gros OK !");
-            } else if ("nope". equals(a)) {
+
+            String tavu = checkAnswer(a);
+			if ("ok".equals(tavu)) {
+                System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !");
+            } else if ("nope". equals(tavu)) {
                 System.out.println("Ohlala, on a fait de la mierda mon ami ><'. RIP notre vie...");
             } else {
                 System.out.println("Dear, we're in trouble !");
@@ -111,7 +113,7 @@ public class Client {
 			is.close();
 			socket.close();
 		} catch (Exception e) {
-			System.err.println("Tu la sens mon Exception, gros ! " + e);
+			System.err.println("Tu la sens mon Exception, gros ! d'ailleurs, la voici gros :" + e);
 		}
 	}
 }
