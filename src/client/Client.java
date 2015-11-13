@@ -88,7 +88,7 @@ public class Client {
 		ObjectInputStream is = null; // input stream
 
 		try {
-			socket = new Socket("10.212.102.235", 4321);
+			socket = new Socket("10.212.96.252", 1313);
             System.out.println("lel");
 
 			Request r = createRequest();
@@ -107,7 +107,9 @@ public class Client {
 			if ("ok".equals(tavu)) {
                 System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !" +
                         "\nMaintenant, regardons ce qu'on nous à retourné...\nDonc, on a déjà réalisé l'action" +
-                        " : " + a.getAction() + "\nEt avec cette action, on a tripoté ça : " + a.getFirstValue());
+                        " : " + a.getAction() + "\nEt avec cette action, on a tripoté ça : " + a.getFirstValue() +
+                        "\nEt y a peut-être un truc ici qu'on a tripotés, mais c'est pas sûr... Donc si c'est pas bon" +
+                        " c'est que c'est null... Enfin bref, tout ça pour dire que c'est : " + a.getSecondValue());
             } else if ("nope". equals(tavu)) {
                 System.out.println("Ohlala, on a fait de la mierda mon ami ><'. RIP notre vie...");
             } else {
