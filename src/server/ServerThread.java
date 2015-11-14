@@ -69,21 +69,30 @@ public class ServerThread extends Thread {
 				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue());
 			}else if(Action.ADD_NICKNAME.equals(request.getAction())) {
 				System.out.println("we add to name "
-						+ request.getFirstValue() + " surname: "
+						+ request.getFirstValue() + " nickname: "
 						+ request.getSecondValue());
-				gns.addSurname(request.getFirstValue(), request.getSecondValue());
+				gns.addNickname(request.getFirstValue(), request.getSecondValue());
 				List<String> al = new ArrayList<String>();
 				al.add(request.getSecondValue());
 				answer = new Answer(Result.OK, request.getAction(),
 						request.getFirstValue(), al);
 			}else if(Action.GET_NICKNAMES.equals(request.getAction())) {
-				System.out.println("we search surname for name: " + request.getFirstValue());
-				List<String> al = gns.getSurnames(request.getFirstValue());
+				System.out.println("we search nickname for name: " + request.getFirstValue());
+				List<String> al = gns.getNicknames(request.getFirstValue());
 				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue(), al);
 			}else if(Action.GET_NAME.equals(request.getAction())) {
+				System.out.println("we search name which have nickname: " + request.getFirstValue());
 				List<String> al = new ArrayList<String>();
 				al.add(gns.getName(request.getFirstValue()));
 				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue(), al);
+			}else if (Action.REMOVE_NICKNAME.equals(request.getAction())){
+				System.out.println("we remove nickname: " + request.getFirstValue());
+				gns.removeNickname(request.getFirstValue());
+				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue());
+			}else if (Action.REMOVE_NAME.equals(request.getAction())){
+				System.out.println("we remove name and all his nicknames: " + request.getFirstValue());
+				gns.removeName(request.getFirstValue());
+				answer = new Answer(Result.OK, request.getAction(), request.getFirstValue());
 			}else {
 				System.err.println("Request is unknown. we send a MarshallingException to the Client");
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());

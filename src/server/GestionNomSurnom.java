@@ -10,30 +10,15 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GestionNomSurnom {
-	private ArrayList<String> surnames;
-	private HashMap<String, ArrayList<Integer>> names;
+	private HashMap<String, String> nicknames;
+	private HashMap<String, ArrayList<String>> names;
 
 	/**
 	 * Constructor for GestionNomSurnom.
 	 */
 	public GestionNomSurnom(){
-		surnames = new ArrayList<String>();
-		names = new HashMap<String, ArrayList<Integer>>();
-	}
-
-	/**
-	 * look for a String surname. 
-	 * 
-	 * @param surname a String which can be o not a surname.
-	 * @return -1 if surnames haven't been found. A int >= 0 otherwise.
-	 */
-	private int searchSurname(String surname){
-		int stop = surnames.size();
-		for(int i = 0; i < stop; i++)
-			if(surname.equals(surnames.get(i)))
-				return i;
-		return -1;
-				
+		nicknames = new HashMap<String, String>();
+		names = new HashMap<String, ArrayList<String>>();
 	}
 	
 	/**
@@ -47,13 +32,13 @@ public class GestionNomSurnom {
 	}
 	
 	/**
-	 * tell if this surname is already use.
+	 * tell if this nickname is already use.
 	 * 
-	 * @param surname a String
-	 * @return true if we know this surname, false otherwise. 
+	 * @param nickname a String
+	 * @return true if we know this nickname, false otherwise. 
 	 */
-	public boolean haveSurname(String surname){
-		return (this.searchSurname(surname) != -1);
+	public boolean haveNickname(String nickname){
+		return nicknames.containsKey(nickname);
 	}
 	
 	/**
@@ -65,57 +50,79 @@ public class GestionNomSurnom {
 	public void addName(String name) throws NameAlreadyExistException{
 		if (this.haveName(name))
 			throw new NameAlreadyExistException(name);
-		names.put(name, new ArrayList<Integer>());
+		names.put(name, new ArrayList<String>());
 	}
 	
 	/**
-	 * add the String surname to name.
+	 * add the String nickname to name.
 	 * 
 	 * @param name a String
-	 * @param surname a String
+	 * @param nickname a String
 	 * @throws NameAlreadyExistException if the name doesn't exist.
-	 * @throws NicknameAlreadyExistException if the surname already exist
+	 * @throws NicknameAlreadyExistException if the nickname already exist
 	 */
-	public void addSurname(String name, String surname) throws NicknameAlreadyExistException, NameAlreadyExistException{
+	public void addNickname(String name, String nickname) throws NicknameAlreadyExistException, NameAlreadyExistException{
 		if (! this.haveName(name))
 			throw new NameAlreadyExistException(name);
-		if (this.haveSurname(surname))
-			throw new NicknameAlreadyExistException(surname);
-		surnames.add(surname);
-		names.get(name).add(surnames.size() - 1);
+		if (this.haveNickname(nickname))
+			throw new NicknameAlreadyExistException(nickname);
+		String sn = new String(nickname);
+		nicknames.put(sn, name);
+		names.get(name).add(sn);
 	}
 
 	/**
-	 * find and return all surname associated with the String name.
+	 * find and return all nickname associated with the String name.
 	 *
-	 * @param name we want surnames of him.
-	 * @return List<String> of the surnames.
+	 * @param name we want nicknames of him.
+	 * @return List<String> of the nicknames.
 	 * @throws NameNotFoundException if we don't know name.
 	 */
-	public List<String> getSurnames(String name) throws NameNotFoundException {
+	public List<String> getNicknames(String name) throws NameNotFoundException {
 		if (!this.haveName(name))
 			throw new NameNotFoundException(name);
-		List<String> al = new ArrayList<String>();
-		List<Integer> sn = names.get(name);
-		for (int i : sn)
-			al.add(surnames.get(i));
-		return al;
+		return names.get(name);
 	}
 
 	/**
+	 * get the name associate with the String nickname.
 	 *
-	 * @param surname
-	 * @return
-	 * @throws NicknameNotFoundException
-	 * @throws NicknameAlreadyExistException
+	 * @param nickname a String
+	 * @return the String name associate with the nickname.
+	 * @throws NicknameNotFoundException if the nickname don't exist.
 	 */
-	public String getName(String surname) throws NicknameNotFoundException, NicknameAlreadyExistException{
-		if (! this.haveSurname(surname))
-			throw new NicknameAlreadyExistException(surname);
-		for (String aName: names.keySet())
-			for (int i : names.get(aName))
-				if(surname.equals(surnames.get(i)))
-					return aName;
-		throw new NicknameNotFoundException(surname);
+	public String getName(String nickname) throws NicknameNotFoundException{
+		if (! this.haveNickname(nickname))
+			throw new NicknameNotFoundException(nickname);
+		return nicknames.get(nickname);
 	}
+
+	/**
+	 * Remove a nickname of a name.
+	 *
+	 * @param nickname a String which represent a Nickname of someone
+	 * @throws NicknameNotFoundException if this nickname doesn't exist.
+	 * @throws NameNotFoundException if there was a big problem, the nickname haven't a name
+	 */
+	public void removeNickname(String nickname) throws NicknameNotFoundException, NameNotFoundException {
+		if(! this.getNicknames(this.getName(nickname)).remove(nickname))
+			throw new NicknameNotFoundException(nickname);
+		nicknames.remove(nickname);
+	}
+
+	/**
+	 * (Optional) Remove a name and all his nickname.
+	 *
+	 * @param name a String
+	 * @throws NameNotFoundException
+	 * @throws NicknameNotFoundException
+	 */
+	public void removeName(String name) throws NameNotFoundException, NicknameNotFoundException{
+		if(! this.haveName(name))
+			throw new NameNotFoundException(name);
+		for (String sn: names.get(name))
+			this.removeNickname(sn);
+		names.remove(name);
+	}
+
 }
