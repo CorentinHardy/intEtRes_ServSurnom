@@ -108,6 +108,53 @@ public class Client {
         }
     }
 
+    /**
+     * Affichage de l'action réalisé par le Serveur.
+     * @param answer
+     */
+    static public void showAction(Answer answer) {
+        if (answer.getAction() == Action.ADD_NAME) {
+            System.out.println("L'action réalisé est l'Ajout d'un Nom.");
+        } else if (answer.getAction() == Action.ADD_NICKNAME) {
+            System.out.println("L'action réalisé est l'Ajout d'un Surnom.");
+        } else if (answer.getAction() == Action.GET_NAME) {
+            System.out.println("L'action réalisé est la Récupération d'un Nom en tappant un Surnom.");
+        } else if (answer.getAction() == Action.GET_NICKNAMES) {
+            System.out.println("L'action réalisé est la Récupération de tout les surnoms d'un Nom donné.");
+        } else if (answer.getAction() == Action.REMOVE_NAME) {
+            System.out.println("L'action réalisé est la suppréssion d'un nom.");
+        } else if (answer.getAction() == Action.REMOVE_NICKNAME) {
+            System.out.println("L'action réalisé est la suppréssion d'un surnom.");
+        } else {
+            System.err.println("L'action réalisé n'est pas reconnu...");
+        }
+    }
+
+    /**
+     * Affichage des valeurs de la réponse du Serveur.
+     * @param answer
+     */
+    static public void showValues(Answer answer) {
+        if (answer.getAction() == Action.ADD_NAME) {
+            System.out.println("L'ajout du Nom : " + answer.getFirstValue()+ " a bien été réalisé.");
+        } else if (answer.getAction() == Action.ADD_NICKNAME) {
+            System.out.println("L'ajout du Surnom : " + answer.getFirstValue()+ " qui est un surnom" +
+                    " de : " + answer.getSecondValue() + " a bien été réalisé.");
+        } else if (answer.getAction() == Action.GET_NAME) {
+            System.out.println("La recherche du Nom associé au Surnom : " + answer.getFirstValue()+ " a retourné" +
+                    " le Nom suivant : " + answer.getSecondValue() + ".");
+        } else if (answer.getAction() == Action.GET_NICKNAMES) {
+            System.out.println("La recherche des Surnoms associé au Nom: " + answer.getFirstValue()+ " a retourné" +
+                    " les Surnoms suivant : " + answer.getSecondValue() + ".");
+        } else if (answer.getAction() == Action.REMOVE_NAME) {
+            System.out.println("La suppréssion du Nom : " + answer.getFirstValue()+ " s'est bien déroulé sans" +
+                    " problèmes.");
+        }else if (answer.getAction() == Action.REMOVE_NICKNAME) {
+            System.out.println("La suppréssion du Surnom : " + answer.getFirstValue()+ " s'est bien déroulé sans" +
+                    " problèmes.");
+        }
+    }
+
 	public static void main(String[] args) {
 		Socket socket = null;
 
@@ -133,13 +180,10 @@ public class Client {
             String tavu = checkAnswer(a);
 
 			if ("ok".equals(tavu)) {
-                System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !" +
-                        "\nMaintenant, regardons ce qu'on nous à retourné...\nDonc, on a déjà réalisé l'action" +
-                        " : " + a.getAction() + "\nEt avec cette action, on a tripoté ça : " + a.getFirstValue() +
-                        "\nEt y a peut-être un truc ici qu'on a tripotés, mais c'est pas sûr... Donc si c'est pas bon" +
-                        " c'est que c'est null... Enfin bref, tout ça pour dire que c'est : " + a.getSecondValue());
+                showAction(a);
+                showValues(a);
             } else if ("nope". equals(tavu)) {
-                System.out.println("Ohlala, on a fait de la mierda mon ami ><'. RIP notre vie...");
+                System.out.println("Le serveur est pas gentil, il a refusé notre requète...");
             } else {
                 System.out.println("Dear, we're in trouble !");
             }
@@ -148,7 +192,7 @@ public class Client {
 			is.close();
 			socket.close();
 		} catch (Exception e) {
-			System.err.println("Tu la sens mon Exception, gros ! D'ailleurs, la voici, gros : " + e);
+			System.err.println("Youston, we have a problem ! Voici le problème en question : " + e);
 		}
 	}
 }
