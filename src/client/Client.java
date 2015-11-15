@@ -5,18 +5,17 @@ import protocol.Answer;
 import protocol.Request;
 import protocol.Result;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client {
 
     static public Request createRequest() {
         System.out.println("Veuillez selectionner l'action à faire :\n1. Ajout d'un nom.\n" +
-                "2. Ajout d'un surnom.");
+                "2. Ajout d'un surnom.\n3. Recherche de surnoms.\n4. Rechercher un nom à partir d'un surnom\n" +
+                "5. Supprimer un surnom.\n6. Supprimer un nom.");
 
         Scanner in = new Scanner(System.in);
 
@@ -40,9 +39,37 @@ public class Client {
             String nickname = in.nextLine();
             in.close();
             return createRequest(Action.ADD_NICKNAME, name, nickname);
-        } else {
+        } else if ("3".equals(number)) {
+            System.out.println("Veuillez tapper le Nom dont vous cherchez le surnom :");
+            in = new Scanner(System.in);
+
+            String name = in.nextLine();
             in.close();
-            return error();
+            return createRequest(Action.GET_NICKNAMES, name);
+        } else if ("4".equals(number)) {
+            System.out.println("Veuillez tapper le Surnom dont vous cherchez le nom originel :");
+            in = new Scanner(System.in);
+
+            String surname = in.nextLine();
+            in.close();
+            return createRequest(Action.GET_NAME, surname);
+        } else if ("5".equals(number)) {
+            System.out.println("Veuillez tapper le Surnom à effacer :");
+            in = new Scanner(System.in);
+
+            String surname = in.nextLine();
+            in.close();
+            return createRequest(Action.REMOVE_NICKNAME, surname);
+        } else if ("6".equals(number)) {
+            System.out.println("Veuillez tapper le nom à effacer :");
+            in = new Scanner(System.in);
+
+            String name = in.nextLine();
+            in.close();
+            return createRequest(Action.REMOVE_NAME, name);
+        } else{
+                in.close();
+                return error();
         }
     }
 
@@ -104,6 +131,7 @@ public class Client {
 			}
 
             String tavu = checkAnswer(a);
+
 			if ("ok".equals(tavu)) {
                 System.out.println("tavu, on a l'Answer et ça marche mon loulou ! Et elle nous dit un bon gros OK !" +
                         "\nMaintenant, regardons ce qu'on nous à retourné...\nDonc, on a déjà réalisé l'action" +
