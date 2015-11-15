@@ -33,6 +33,7 @@ public class Server {
 			}
 		}
 		try {
+			System.out.println("We close the server.");
 			serverSocket.close();
 		} catch (IOException e) {
 			System.err.println("An IOException have appeared when we close the server:");

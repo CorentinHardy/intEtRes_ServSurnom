@@ -58,12 +58,12 @@ public class GestionNomSurnom {
 	 * 
 	 * @param name a String
 	 * @param nickname a String
-	 * @throws NameAlreadyExistException if the name doesn't exist.
+	 * @throws NameNotFoundException if the name doesn't exist.
 	 * @throws NicknameAlreadyExistException if the nickname already exist
 	 */
-	public void addNickname(String name, String nickname) throws NicknameAlreadyExistException, NameAlreadyExistException{
+	public void addNickname(String name, String nickname) throws NicknameAlreadyExistException, NameNotFoundException{
 		if (! this.haveName(name))
-			throw new NameAlreadyExistException(name);
+			throw new NameNotFoundException(name);
 		if (this.haveNickname(nickname))
 			throw new NicknameAlreadyExistException(nickname);
 		String sn = new String(nickname);
@@ -79,7 +79,7 @@ public class GestionNomSurnom {
 	 * @throws NameNotFoundException if we don't know name.
 	 */
 	public List<String> getNicknames(String name) throws NameNotFoundException {
-		if (!this.haveName(name))
+		if (! this.haveName(name))
 			throw new NameNotFoundException(name);
 		return names.get(name);
 	}
@@ -102,12 +102,16 @@ public class GestionNomSurnom {
 	 *
 	 * @param nickname a String which represent a Nickname of someone
 	 * @throws NicknameNotFoundException if this nickname doesn't exist.
-	 * @throws NameNotFoundException if there was a big problem, the nickname haven't a name
 	 */
-	public void removeNickname(String nickname) throws NicknameNotFoundException, NameNotFoundException {
-		if(! this.getNicknames(this.getName(nickname)).remove(nickname))
+	public void removeNickname(String nickname) throws NicknameNotFoundException {
+		try{
+			this.getNicknames(this.getName(nickname)).remove(nickname);
+		}catch(NameNotFoundException e){
+			System.err.println("Something bad have happened: a nickname haven't name with it.");
+			e.printStackTrace();
+		}
+		if (nicknames.remove(nickname) == null)
 			throw new NicknameNotFoundException(nickname);
-		nicknames.remove(nickname);
 	}
 
 	/**
@@ -115,13 +119,14 @@ public class GestionNomSurnom {
 	 *
 	 * @param name a String
 	 * @throws NameNotFoundException
-	 * @throws NicknameNotFoundException
 	 */
-	public void removeName(String name) throws NameNotFoundException, NicknameNotFoundException{
+	public void removeName(String name) throws NameNotFoundException{
 		if(! this.haveName(name))
 			throw new NameNotFoundException(name);
-		for (String sn: names.get(name))
-			this.removeNickname(sn);
+		for (String sn: names.get(name)) {
+			System.out.println("We remove nickname: " + sn);
+			nicknames.remove(sn);
+		}
 		names.remove(name);
 	}
 
