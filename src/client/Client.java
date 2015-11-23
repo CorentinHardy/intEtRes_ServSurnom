@@ -191,8 +191,6 @@ public class Client {
                 System.out.println("Oh dear, we're in trouble !");
             }
 			
-			os.close();
-			is.close();
 			socket.close();
 		} catch (Exception e) {
 			System.err.println("Youston, we have a problem ! Voici le problème en question : " + e);
