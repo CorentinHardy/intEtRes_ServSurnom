@@ -8,29 +8,28 @@ import protocol.Request;
 import protocol.Result;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServerThread extends Thread {
-	private Socket socket;
+	private DatagramPacket paquetRecu;
 	private GestionNomSurnom gns;
 
 
-	public ServerThread(Socket socket, GestionNomSurnom gns) {
+
+	public ServerThread(DatagramPacket paquetRecu, GestionNomSurnom gns) {
 		super("ServerThread");
-		this.socket = socket;
+		this.paquetRecu = paquetRecu;
 		this.gns = gns;
 	}
 
 	public void run() {
-		ObjectOutputStream os;
-		ObjectInputStream is;
+		byte[] buf = new byte[paquetRecu.getLength()];
+		DatagramPacket yo;
+
 		try {
-			os = new ObjectOutputStream(socket.getOutputStream());
-			is = new ObjectInputStream(socket.getInputStream());
+			yo = new DatagramPacket(buf, buf.length);
 			System.out.println("Thread start");
 
 			Request request;
@@ -38,7 +37,7 @@ public class ServerThread extends Thread {
 
 			try {
 				do
-					request = (Request) is.readObject();
+					request = (Request) yo.readObject();
 				while (request == null);
 				answer = findAnswer(request);
 			} catch (ClassNotFoundException e) {
@@ -48,11 +47,10 @@ public class ServerThread extends Thread {
 			}
 
 			System.out.println("we sent an answer");
-			os.writeObject(answer);
+//			os.writeObject(answer);
 
-			socket.close();
-			os.close();
-			is.close();
+			paquetRecu.close();
+			yo.close();
 			System.out.println("Thread's end");
 		} catch (IOException e) {
 			System.err.println("a IOException has appeared: ");
