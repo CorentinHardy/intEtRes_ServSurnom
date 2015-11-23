@@ -7,6 +7,9 @@ import protocol.Result;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -155,26 +158,26 @@ public class Client {
         }
     }
 
+    final static int taille = 1024;
+    static byte buffer[] = new byte[taille];
+
 	public static void main(String[] args) {
-		Socket socket = null;
-
-		ObjectOutputStream os = null; // output stream
-		ObjectInputStream is = null; // input stream
-
 		try {
-			socket = new Socket("10.212.96.252", 1313);
-            System.out.println("lel");
+            InetAddress serveur = InetAddress.getByName("un nom");
+            int length = "untruc".length();
+            byte buffer[] = "untruc".getBytes();
 
-			Request r = createRequest();
-			
-			os = new ObjectOutputStream(socket.getOutputStream());
-			is = new ObjectInputStream(socket.getInputStream());
-			
+            DatagramSocket socket = new DatagramSocket();
+            DatagramPacket donneesEmises = new DatagramPacket(buffer, length, serveur, 1313);
+            DatagramPacket donneesRecues = new DatagramPacket(new byte[taille], taille);
+
+            socket.setSoTimeout(30000);
+            socket.send(donneesEmises);
+            socket.receive(donneesRecues);
+
 			Answer a = null;
-
-			os.writeObject(r);
 			while(a == null){
-				a = (Answer) is.readObject();
+				//TODO: Lecture des données reçues
 			}
 
             String tavu = checkAnswer(a);
@@ -185,11 +188,9 @@ public class Client {
             } else if ("nope". equals(tavu)) {
                 System.out.println("Le serveur est pas gentil, il a refusé notre requète...");
             } else {
-                System.out.println("Dear, we're in trouble !");
+                System.out.println("Oh dear, we're in trouble !");
             }
 			
-			os.close();
-			is.close();
 			socket.close();
 		} catch (Exception e) {
 			System.err.println("Youston, we have a problem ! Voici le problème en question : " + e);
