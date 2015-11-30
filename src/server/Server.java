@@ -6,7 +6,7 @@ import java.net.DatagramSocket;
 
 public class Server {
 	
-	public static void main(String[] args) {
+	public Server() {
 		System.out.println("Server Start:");
 
 		DatagramSocket serverSocket = null;
@@ -16,6 +16,7 @@ public class Server {
 		
 		try {
 			serverSocket = new DatagramSocket(port);
+			paquet = new DatagramPacket(new byte[1024], 1024);
 		} catch (IOException e) {
 			System.err.println("IOException on port: " + port);
 			e.printStackTrace();
@@ -29,6 +30,7 @@ public class Server {
 				serverSocket.receive(paquet);
 				// accepter une connection et faire un nouveau thread
 				(new ServerThread(paquet, gns)).start();
+				wait(1);
 			}catch(Exception e){
 				System.err.println("There was a big unknown problem: ");
 				e.printStackTrace();
@@ -37,5 +39,9 @@ public class Server {
 		}
 		System.out.println("We close the server.");
 		serverSocket.close();
+	}
+
+	public static void main(String[] args){
+		new Server();
 	}
 }

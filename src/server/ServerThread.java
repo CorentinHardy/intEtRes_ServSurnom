@@ -7,8 +7,9 @@ import protocol.Answer;
 import protocol.Request;
 import protocol.Result;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,12 +17,23 @@ public class ServerThread extends Thread {
 	private DatagramPacket paquetRecu;
 	private GestionNomSurnom gns;
 
-
+	public static byte[] serialize(Object obj) throws IOException {
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		ObjectOutputStream o = new ObjectOutputStream(b);
+		o.writeObject(obj);
+		return b.toByteArray();
+	}
+	public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+		ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+		ObjectInputStream o = new ObjectInputStream(b);
+		return o.readObject();
+	}
 
 	public ServerThread(DatagramPacket paquetRecu, GestionNomSurnom gns) {
 		super("ServerThread");
 		this.paquetRecu = paquetRecu;
 		this.gns = gns;
+		System.out.println("0_deb_thread");
 	}
 
 	public void run() {
@@ -32,12 +44,12 @@ public class ServerThread extends Thread {
 			yo = new DatagramPacket(buf, buf.length);
 			System.out.println("Thread start");
 
-			Request request;
+			Request request ; //= paquetRecu.getData();
 			Answer answer;
 
 			try {
 				do
-					request = (Request) yo.readObject();
+					request = (Request) deserialize(paquetRecu.getData());
 				while (request == null);
 				answer = findAnswer(request);
 			} catch (ClassNotFoundException e) {
@@ -45,12 +57,15 @@ public class ServerThread extends Thread {
 				e.printStackTrace();
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
+			yo.setData(serialize(answer));
+
+			DatagramSocket socket = new DatagramSocket();
+			socket.setSoTimeout(30000);
 
 			System.out.println("we sent an answer");
-//			os.writeObject(answer);
+			socket.send(yo);
 
-			paquetRecu.close();
-			yo.close();
+			socket.close();
 			System.out.println("Thread's end");
 		} catch (IOException e) {
 			System.err.println("a IOException has appeared: ");
