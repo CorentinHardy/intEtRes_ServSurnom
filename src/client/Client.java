@@ -101,6 +101,11 @@ public class Client {
         return new Request(action, string1, string2);
     }
 
+    /**
+     * Méthode vérifiant si la réponse est acceptable ou non
+     * @param answer
+     * @return
+     */
     static public String checkAnswer(Answer answer) {
         Result result = answer.getResult();
         if (result == Result.OK) {
@@ -157,17 +162,30 @@ public class Client {
         }
     }
 
+    /**
+     * Méthode de sérialisation
+     * @param obj
+     * @return
+     * @throws IOException
+     */
     public static byte[] serialize(Object obj) throws IOException {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ObjectOutputStream o = new ObjectOutputStream(b);
-        o.writeObject(obj);
-        return b.toByteArray();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(obj);
+        return outputStream.toByteArray();
     }
 
+    /**
+     * Méthode de désérialisation
+     * @param bytes
+     * @return
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
-        ObjectInputStream o = new ObjectInputStream(b);
-        return o.readObject();
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+        return objectInputStream.readObject();
     }
 
     final static int taille = 1024;
