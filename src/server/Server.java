@@ -9,7 +9,7 @@ public class Server {
 	public static final int PORT = 1313;
 
 	public Server() {
-		System.out.println("Server Start:");
+		System.out.println("[SERVEUR] " + "Server Start:");
 
 		DatagramSocket serverSocket = null;
 		DatagramPacket paquet = null;
@@ -26,20 +26,21 @@ public class Server {
 		
 		GestionNomSurnom gns = new GestionNomSurnom();
 
+		int nb = 0;
 		while(enEcoute){
 			try{
-				System.out.println("prêt a recevoir");
+				System.out.println("[SERVEUR] " + "prêt a recevoir");
 				serverSocket.receive(paquet);
 				// accepter une connection et faire un nouveau thread
-				System.out.println("     reçu");
-				(new ServerThread(paquet, gns)).start();
+				System.out.println("[SERVEUR] " + "     reçu");
+				(new ServerThread(paquet, gns, nb++)).start();
 			}catch(Exception e){
 				System.err.println("There was a big unknown problem: ");
 				e.printStackTrace();
 				enEcoute = false;
 			}
 		}
-		System.out.println("We close the server.");
+		System.out.println("[SERVEUR] " + "We close the server.");
 		serverSocket.close();
 	}
 
