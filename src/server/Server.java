@@ -1,8 +1,8 @@
 package server;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.SocketException;
 
 public class Server {
 
@@ -18,25 +18,27 @@ public class Server {
 		try {
 			serverSocket = new DatagramSocket(PORT);
 			paquet = new DatagramPacket(new byte[1024], 1024);
-		} catch (IOException e) {
-			System.err.println("IOException on port: " + PORT);
+		} catch (SocketException e) {
+			System.err.println("[SERVEUR] " + "SocketException on port: " + PORT);
 			e.printStackTrace();
 			System.exit(-1);
 		}
 		
 		GestionNomSurnom gns = new GestionNomSurnom();
+		// pour explicité le message des Threads
+		int nbThread = 0;
 
-		int nb = 0;
 		while(enEcoute){
-			try{
+			try {
 				System.out.println("[SERVEUR] " + "prêt a recevoir");
 				serverSocket.receive(paquet);
 				// accepter une connection et faire un nouveau thread
 				System.out.println("[SERVEUR] " + "     reçu");
-				(new ServerThread(paquet, gns, nb++)).start();
+				(new ServerThread(paquet, gns, nbThread++)).start();
 				paquet = new DatagramPacket(new byte[1024], 1024);
 			}catch(Exception e){
-				System.err.println("There was a big unknown problem: ");
+				// le plus normale serait une IOException de receive
+				System.err.println("[SERVEUR] " + "There was a big unknown problem: ");
 				e.printStackTrace();
 				enEcoute = false;
 			}

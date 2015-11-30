@@ -9,7 +9,6 @@ import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
@@ -193,7 +192,7 @@ public class Client {
 
 	public static void main(String[] args) {
 		try {
-            InetAddress serveur = InetAddress.getByName("10.212.96.252");
+            InetAddress serveur = InetAddress.getByName("localhost");
             Request request = createRequest();
 
             int length = serialize(request).length;

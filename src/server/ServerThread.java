@@ -25,7 +25,6 @@ public class ServerThread extends Thread {
 			o.writeObject(obj);
 			return b.toByteArray();
 		}finally{
-			System.out.println("[THREAD_"+nbThread+"] " + "on ferme serialize");
 			o.close();
 		}
 	}
@@ -36,7 +35,6 @@ public class ServerThread extends Thread {
 			Object res = o.readObject();
 			return res;
 		}finally{
-			System.out.println("[THREAD_"+nbThread+"] " + "on ferme deserialize");
 			o.close();
 		}
 	}
@@ -46,14 +44,12 @@ public class ServerThread extends Thread {
 		this.paquetRecu = paquetRecu;
 		this.gns = gns;
 		this.nbThread = nbThread;
-		//System.out.println("[THREAD_"+nbThread+"] " + "0_1deb_thread");
 	}
 
 	public void run() {
+		System.out.println("[THREAD_"+nbThread+"] " + "Thread start");
 		try {
-			System.out.println("[THREAD_"+nbThread+"] " + "Thread start");
 			byte[] buf = new byte[paquetRecu.getLength()];
-			System.out.println("[THREAD_"+nbThread+"] " + "lenght" + paquetRecu.getLength());
 
 			DatagramPacket yo;
 			Request request ;
@@ -64,7 +60,7 @@ public class ServerThread extends Thread {
 					request = (Request) deserialize(paquetRecu.getData());
 				while (request == null);
 				answer = findAnswer(request);
-				System.out.println("[THREAD_"+nbThread+"] " + "we have prepared the answer for " + request.getFirstValue());
+				System.out.println("[THREAD_"+nbThread+"] " + "we have prepared the answer for the request " + request.getAction());
 			} catch (ClassNotFoundException e) {
 				System.err.println("[THREAD_"+nbThread+"] " + "a ClassNotFoundException has appeared: ");
 				e.printStackTrace();
@@ -75,9 +71,9 @@ public class ServerThread extends Thread {
 			yo.setData(serialize(answer));
 
 			DatagramSocket socket = new DatagramSocket();
-//			socket.setSoTimeout(30000);
+			socket.setSoTimeout(30000);
 
-			System.out.println("[THREAD_"+nbThread+"] " + "we sent an answer");
+			System.out.println("[THREAD_" + nbThread + "] " + "we sent an answer");
 			socket.send(yo);
 
 			socket.close();
