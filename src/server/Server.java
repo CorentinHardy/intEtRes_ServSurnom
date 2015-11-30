@@ -34,6 +34,7 @@ public class Server {
 				// accepter une connection et faire un nouveau thread
 				System.out.println("[SERVEUR] " + "     reçu");
 				(new ServerThread(paquet, gns, nb++)).start();
+				paquet = new DatagramPacket(new byte[1024], 1024);
 			}catch(Exception e){
 				System.err.println("There was a big unknown problem: ");
 				e.printStackTrace();
