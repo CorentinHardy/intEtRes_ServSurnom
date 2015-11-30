@@ -5,8 +5,7 @@ import protocol.Answer;
 import protocol.Request;
 import protocol.Result;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -158,14 +157,29 @@ public class Client {
         }
     }
 
+    public static byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        ObjectOutputStream o = new ObjectOutputStream(b);
+        o.writeObject(obj);
+        return b.toByteArray();
+    }
+
+    public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
+        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
+        ObjectInputStream o = new ObjectInputStream(b);
+        return o.readObject();
+    }
+
     final static int taille = 1024;
     static byte buffer[] = new byte[taille];
 
 	public static void main(String[] args) {
 		try {
-            InetAddress serveur = InetAddress.getByName("un nom");
-            int length = "untruc".length();
-            byte buffer[] = "untruc".getBytes();
+            InetAddress serveur = InetAddress.getByName("10.212.96.252");
+            Request request = createRequest();
+
+            int length = serialize(request).length;
+            byte buffer[] = serialize(request);
 
             DatagramSocket socket = new DatagramSocket();
             DatagramPacket donneesEmises = new DatagramPacket(buffer, length, serveur, 1313);
@@ -175,9 +189,10 @@ public class Client {
             socket.send(donneesEmises);
             socket.receive(donneesRecues);
 
-			Answer a = null;
+            byte receive[] = donneesRecues.getData();
+			Answer a = (Answer) deserialize(receive);
 			while(a == null){
-				//TODO: Lecture des données reçues
+				
 			}
 
             String tavu = checkAnswer(a);
@@ -190,7 +205,7 @@ public class Client {
             } else {
                 System.out.println("Oh dear, we're in trouble !");
             }
-			
+
 			socket.close();
 		} catch (Exception e) {
 			System.err.println("Youston, we have a problem ! Voici le problème en question : " + e);
