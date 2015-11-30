@@ -192,19 +192,17 @@ public class Client {
             byte receive[] = donneesRecues.getData();
 			Answer a = (Answer) deserialize(receive);
 			while(a == null){
-				
+                String tavu = checkAnswer(a);
+
+                if ("ok".equals(tavu)) {
+                    showAction(a);
+                    showValues(a);
+                } else if ("nope". equals(tavu)) {
+                    System.out.println("Le serveur est pas gentil, il a refusé notre requète...");
+                } else {
+                    System.out.println("Oh dear, we're in trouble !");
+                }
 			}
-
-            String tavu = checkAnswer(a);
-
-			if ("ok".equals(tavu)) {
-                showAction(a);
-                showValues(a);
-            } else if ("nope". equals(tavu)) {
-                System.out.println("Le serveur est pas gentil, il a refusé notre requète...");
-            } else {
-                System.out.println("Oh dear, we're in trouble !");
-            }
 
 			socket.close();
 		} catch (Exception e) {
