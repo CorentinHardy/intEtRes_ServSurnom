@@ -1,9 +1,9 @@
 package server;
 
-import Exception.NameAlreadyExistException;
-import Exception.NameNotFoundException;
-import Exception.NicknameAlreadyExistException;
-import Exception.NicknameNotFoundException;
+import exception.NameAlreadyExistException;
+import exception.NameNotFoundException;
+import exception.NicknameAlreadyExistException;
+import exception.NicknameNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

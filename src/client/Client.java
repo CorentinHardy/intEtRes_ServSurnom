@@ -190,8 +190,9 @@ public class Client {
             socket.receive(donneesRecues);
 
             byte receive[] = donneesRecues.getData();
-			Answer a = (Answer) deserialize(receive);
+            Answer a = null;
 			while(a == null){
+                a = (Answer) deserialize(receive);
                 String tavu = checkAnswer(a);
 
                 if ("ok".equals(tavu)) {

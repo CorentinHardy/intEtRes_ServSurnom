@@ -1,7 +1,7 @@
 package server;
 
-import Exception.MarshallingException;
-import Exception.StringException;
+import exception.MarshallingException;
+import exception.StringException;
 import protocol.Action;
 import protocol.Answer;
 import protocol.Request;
@@ -112,7 +112,7 @@ public class ServerThread extends Thread {
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
 		} catch (StringException e) {
-			System.out.println("Answer Exception sent: " + e.toString());
+			System.out.println("Answer exception sent: " + e.toString());
 			answer = new Answer(Result.EXCEPTION, request.getAction(), e.toString());
 		}
 		return answer;
