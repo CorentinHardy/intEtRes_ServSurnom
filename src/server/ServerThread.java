@@ -20,30 +20,41 @@ public class ServerThread extends Thread {
 	public static byte[] serialize(Object obj) throws IOException {
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		ObjectOutputStream o = new ObjectOutputStream(b);
-		o.writeObject(obj);
-		return b.toByteArray();
+		try {
+			o.writeObject(obj);
+			return b.toByteArray();
+		}finally{
+			System.out.println("on ferme serialize");
+			o.close();
+		}
 	}
 	public static Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
 		ByteArrayInputStream b = new ByteArrayInputStream(bytes);
 		ObjectInputStream o = new ObjectInputStream(b);
-		return o.readObject();
+		try {
+			Object res = o.readObject();
+			return res;
+		}finally{
+			System.out.println("on ferme deserialize");
+			o.close();
+		}
 	}
 
 	public ServerThread(DatagramPacket paquetRecu, GestionNomSurnom gns) {
 		super("ServerThread");
 		this.paquetRecu = paquetRecu;
 		this.gns = gns;
-		System.out.println("0_1deb_thread");
+		//System.out.println("0_1deb_thread");
 	}
 
 	public void run() {
-		byte[] buf = new byte[paquetRecu.getLength()];
-
 		try {
 			System.out.println("Thread start");
+			byte[] buf = new byte[paquetRecu.getLength()];
+			System.out.println("lenght" + paquetRecu.getLength());
 
 			DatagramPacket yo;
-			Request request ; //= paquetRecu.getData();
+			Request request ;
 			Answer answer;
 
 			try {
@@ -56,12 +67,13 @@ public class ServerThread extends Thread {
 				e.printStackTrace();
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
+			System.out.println("we have prepared the answer.");
 			yo = new DatagramPacket(buf, buf.length, paquetRecu.getSocketAddress());
 
 			yo.setData(serialize(answer));
 
 			DatagramSocket socket = new DatagramSocket();
-			socket.setSoTimeout(30000);
+//			socket.setSoTimeout(30000);
 
 			System.out.println("we sent an answer");
 			socket.send(yo);

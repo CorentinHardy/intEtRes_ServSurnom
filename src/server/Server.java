@@ -28,8 +28,10 @@ public class Server {
 
 		while(enEcoute){
 			try{
+				System.out.println("prêt a recevoir");
 				serverSocket.receive(paquet);
 				// accepter une connection et faire un nouveau thread
+				System.out.println("     reçu");
 				(new ServerThread(paquet, gns)).start();
 			}catch(Exception e){
 				System.err.println("There was a big unknown problem: ");
