@@ -5,20 +5,21 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 public class Server {
-	
+
+	public static final int PORT = 1313;
+
 	public Server() {
 		System.out.println("Server Start:");
 
 		DatagramSocket serverSocket = null;
 		DatagramPacket paquet = null;
 		Boolean enEcoute = true;
-		int port = 1313;
-		
+
 		try {
-			serverSocket = new DatagramSocket(port);
+			serverSocket = new DatagramSocket(PORT);
 			paquet = new DatagramPacket(new byte[1024], 1024);
 		} catch (IOException e) {
-			System.err.println("IOException on port: " + port);
+			System.err.println("IOException on port: " + PORT);
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -30,7 +31,6 @@ public class Server {
 				serverSocket.receive(paquet);
 				// accepter une connection et faire un nouveau thread
 				(new ServerThread(paquet, gns)).start();
-				wait(1);
 			}catch(Exception e){
 				System.err.println("There was a big unknown problem: ");
 				e.printStackTrace();

@@ -33,17 +33,16 @@ public class ServerThread extends Thread {
 		super("ServerThread");
 		this.paquetRecu = paquetRecu;
 		this.gns = gns;
-		System.out.println("0_deb_thread");
+		System.out.println("0_1deb_thread");
 	}
 
 	public void run() {
 		byte[] buf = new byte[paquetRecu.getLength()];
-		DatagramPacket yo;
 
 		try {
-			yo = new DatagramPacket(buf, buf.length);
 			System.out.println("Thread start");
 
+			DatagramPacket yo;
 			Request request ; //= paquetRecu.getData();
 			Answer answer;
 
@@ -57,6 +56,8 @@ public class ServerThread extends Thread {
 				e.printStackTrace();
 				answer = new Answer(Result.EXCEPTION, null, new MarshallingException().toString());
 			}
+			yo = new DatagramPacket(buf, buf.length, paquetRecu.getSocketAddress());
+
 			yo.setData(serialize(answer));
 
 			DatagramSocket socket = new DatagramSocket();
